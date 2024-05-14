@@ -22,7 +22,6 @@ client.connect()
         db = client.db(dbName);
         libraryBooks = db.collection('libraryBooks');
         members = db.collection('members');
-        console.log('aaabbb', members.collectionName);
     })
     .catch(err => {
         console.log('connection error', err)

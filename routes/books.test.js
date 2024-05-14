@@ -87,7 +87,7 @@ describe('books', () => {
     expect(response2.status).toBe(200);
   });
 
-  test.only('DELETE /books', async () => {
+  test('DELETE /books', async () => {
     //POST a document
     const id = v4();
     const response1 = await postABook({ id });

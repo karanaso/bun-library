@@ -5,6 +5,7 @@ import { cors } from '@elysiajs/cors'
 
 import { rootController } from './routes/root';
 import { booksController } from './routes/books';
+import { membersController } from './routes/members';
 import { jwtDecode } from 'jwt-decode';
 
 const port = 3000;
@@ -33,4 +34,5 @@ export const elysia = new Elysia()
   .use(rootController)
   // .onBeforeHandle(cx => console.log('booksController onBeforeHandle'))
   .use(booksController)
+  .use(membersController)
   .listen(port);

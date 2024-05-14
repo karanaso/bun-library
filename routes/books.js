@@ -1,6 +1,5 @@
 import { Elysia, NotFoundError } from 'elysia';
 import { libraryBooks } from '../connection';
-import { ObjectId } from 'mongodb';
 
 export const booksController = new Elysia({ prefix: "/books" })
   .get("/", async cx => {

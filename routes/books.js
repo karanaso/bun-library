@@ -12,18 +12,17 @@ export const booksController = new Elysia({ prefix: "/books" })
     const books = await libraryBooks.find(searchOptions).toArray();
     return books;
   })
-  .get("/:bookId", async cx => {
+  .get("/:id", async cx => {
     const book = await libraryBooks.findOne({
-      bookId: cx.params.bookId
+      id: cx.params.id
     });
-    if (!book) throw new Error('not-found');
-
+    if (!book) cx.set.status = 404;
     return book;
   })
   .post('/', async cx => {
-    const book = cx.body;
-    await libraryBooks.insertOne(book);
-    return book;
+    const response = await libraryBooks.insertOne(cx.body);
+    cx.set.status = 201;
+    return response;
   })
   .put('/', async cx => {
     let response = {};
@@ -51,18 +50,11 @@ export const booksController = new Elysia({ prefix: "/books" })
     }
     return response;
   })
-  .delete('/:id', cx => {
-    console.log('query id to be deleted', cx.params.id);
-    return libraryBooks.deleteOne({
+  .delete('/:id', async cx => {
+    const z =  await libraryBooks.deleteOne({
       id: cx.params.id
     })
-  })
-  .onError(cx => {
-    const error = cx.error.toString();
-    if (error === 'Error: not-found') {
-      cx.set.status = 404
-      return 'Not Found :('
-    }
 
-    return cx
+    return z;
   })
+  

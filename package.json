@@ -19,6 +19,7 @@
     "@elysiajs/cors": "^1.0.2",
     "@elysiajs/jwt": "^1.0.2",
     "@elysiajs/swagger": "^1.0.3",
+    "dayjs": "^1.11.11",
     "elysia": "^1.0.13",
     "jwt-decode": "^4.0.0",
     "mongodb": "^6.5.0",

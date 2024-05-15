@@ -7,10 +7,22 @@ export const bookTransactionsController = new Elysia({
   tags: ['book-transactions'],
 })
   .get("/", async cx => {
-    const searchOptions = {};
+    let searchOptions = {};
+    if (cx.query.memberId) searchOptions.memberId = cx.query.memberId;
+    if (cx.query.bookId) searchOptions.bookId = cx.query.bookId;
+    if (cx.query.due) searchOptions.dueDate = {
+      "$gte": new Date().toISOString().substring(0, 10)
+    };
+
+    searchOptions = {
+      $and: [
+        searchOptions
+      ]
+    };
+    
     const _bookTransactions = await bookTransactions.find(searchOptions).toArray();
     if (!_bookTransactions) cx.set.status = 404;
-    
+
     return _bookTransactions;
   })
   .get("/:id", async cx => {
@@ -35,6 +47,7 @@ export const bookTransactionsController = new Elysia({
       memberId: t.String(),
       outDate: t.String(),
       dueDate: t.String(),
+      returnDate: t.Optional(t.Date()),
       note: t.Optional(t.String()),
     })
   })
@@ -62,6 +75,33 @@ export const bookTransactionsController = new Elysia({
       console.error(e);
     }
     return response;
+  })
+  .put('/return/:id', async cx => {
+    let response;
+    try {
+      response = await bookTransactions.updateOne(
+        {
+          id: cx.params.id
+        },
+        {
+          $set: {
+            dueDate: new Date().toISOString()
+          }
+        },
+        {
+          upsert: false
+        }
+      );
+    } catch (e) {
+      console.error(e);
+    }
+
+    return response;
+    
+  }, {
+    params: t.Object({
+      id: t.String()
+    })
   })
   .delete('/:id', async cx => {
     return await bookTransactions.deleteOne({

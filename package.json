@@ -15,6 +15,7 @@
     "test-watch": "bun --watch test"
   },
   "dependencies": {
+    "@bogeychan/elysia-logger": "^0.0.21",
     "@elysiajs/cors": "^1.0.2",
     "@elysiajs/jwt": "^1.0.2",
     "@elysiajs/swagger": "^1.0.3",

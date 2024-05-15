@@ -1,26 +1,25 @@
-import { Elysia,t } from 'elysia';
+import { Elysia, t } from 'elysia';
 import { bookTransactions } from '../connection';
 
 
 export const bookTransactionsController = new Elysia({
   prefix: "/book-transactions",
   tags: ['book-transactions'],
-}).get("/", async cx => {
-  const searchOptions = {};
-
-  const _bookTransactions = await bookTransactions.find(searchOptions).toArray();
-  if (!_bookTransactions) cx.set.status = 404;
-
-  return _bookTransactions;
 })
+  .get("/", async cx => {
+    const searchOptions = {};
+    const _bookTransactions = await bookTransactions.find(searchOptions).toArray();
+    if (!_bookTransactions) cx.set.status = 404;
+    
+    return _bookTransactions;
+  })
   .get("/:id", async cx => {
-
     const member = await bookTransactions.findOne({
       id: cx.params.id
     });
     if (!member) cx.set.status = 404;
     return member;
-  },{
+  }, {
     params: t.Object({
       id: t.String()
     })
@@ -68,11 +67,11 @@ export const bookTransactionsController = new Elysia({
     return await bookTransactions.deleteOne({
       id: cx.params.id
     });
-  },{
+  }, {
     params: t.Object({
       id: t.String()
     })
-  }).onError( cx => {
+  }).onError(cx => {
     console.error(cx.error);
     return cx.error;
   })

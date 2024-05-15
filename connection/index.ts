@@ -1,4 +1,5 @@
 import type { Collection, MongoDBCollectionNamespace } from "mongodb";
+import { bookTransactions } from "../routes/bookTransactions";
 
 const { MongoClient } = require('mongodb');
 
@@ -8,6 +9,7 @@ const client = new MongoClient(url);
 export let db: MongoDBCollectionNamespace;
 export let libraryBooks: Collection;
 export let members: Collection;
+export let bookTransactions: Collection;
 
 let dbName = 'librarian';
 let collection;
@@ -22,6 +24,7 @@ client.connect()
         db = client.db(dbName);
         libraryBooks = db.collection('libraryBooks');
         members = db.collection('members');
+        bookTransactions = db.collection('book-transactions');
     })
     .catch(err => {
         console.log('connection error', err)

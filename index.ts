@@ -7,6 +7,7 @@ import { rootController } from './routes/root';
 import { booksController } from './routes/books';
 import { membersController } from './routes/members';
 import { jwtDecode } from 'jwt-decode';
+import { bookTransactionsController } from './routes/bookTransactions';
 
 const port = 3000;
 export const elysia = new Elysia()
@@ -35,4 +36,5 @@ export const elysia = new Elysia()
   // .onBeforeHandle(cx => console.log('booksController onBeforeHandle'))
   .use(booksController)
   .use(membersController)
+  .use(bookTransactionsController)
   .listen(port);

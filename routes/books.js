@@ -1,8 +1,10 @@
 import { Elysia, NotFoundError } from 'elysia';
 import { libraryBooks } from '../connection';
 
-export const booksController = new Elysia({ prefix: "/books" })
-  .get("/", async cx => {
+export const booksController = new Elysia({
+  prefix: "/books",
+  tags: ['books']
+  }).get("/", async cx => {
     const searchOptions = {};
     if (cx.query.bookId) searchOptions.bookId = parseInt(cx.query.bookId);
     if (cx.query.title) searchOptions.title = { $regex: cx.query.title, $options: "i" };
@@ -50,10 +52,10 @@ export const booksController = new Elysia({ prefix: "/books" })
     return response;
   })
   .delete('/:id', async cx => {
-    const z =  await libraryBooks.deleteOne({
+    const z = await libraryBooks.deleteOne({
       id: cx.params.id
     })
 
     return z;
   })
-  
+

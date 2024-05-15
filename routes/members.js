@@ -2,8 +2,10 @@ import { Elysia, NotFoundError } from 'elysia';
 import { members, libraryBooks} from '../connection';
 
 
-export const membersController = new Elysia({ prefix: "/members" })
-  .get("/", async cx => {
+export const membersController = new Elysia({ 
+  prefix: "/members",
+  tags: ['members']
+}).get("/", async cx => {
     const searchOptions = {};
     if (cx.query.memberId) searchOptions.memberId = cx.query.memberId;
     if (cx.query.firstName) searchOptions.firstName = { $regex: cx.query.firstName, $options: "i" };

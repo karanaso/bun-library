@@ -2,17 +2,19 @@ import { Elysia } from 'elysia';
 import { bookTransactions } from '../connection';
 
 
-export const bookTransactionsController = new Elysia({ prefix: "/book-transactions" })
-  .get("/", async cx => {
-    const searchOptions = {};
-    
-    const _bookTransactions = await bookTransactions.find(searchOptions).toArray();
-    if (!_bookTransactions) cx.set.status = 404;
-    
-    return _bookTransactions;
-  })
+export const bookTransactionsController = new Elysia({
+  prefix: "/book-transactions",
+  tags: ['book-transactions']
+}).get("/", async cx => {
+  const searchOptions = {};
+
+  const _bookTransactions = await bookTransactions.find(searchOptions).toArray();
+  if (!_bookTransactions) cx.set.status = 404;
+
+  return _bookTransactions;
+})
   .get("/:id", async cx => {
-    
+
     const member = await bookTransactions.findOne({
       id: cx.params.id
     });
@@ -33,7 +35,7 @@ export const bookTransactionsController = new Elysia({ prefix: "/book-transactio
       ...cx.body
     };
     delete data._id;
-    
+
     try {
       response = await bookTransactions.updateOne(
         query,
@@ -50,10 +52,10 @@ export const bookTransactionsController = new Elysia({ prefix: "/book-transactio
     return response;
   })
   .delete('/:id', async cx => {
-    const z =  await bookTransactions.deleteOne({
+    const z = await bookTransactions.deleteOne({
       id: cx.params.id
     })
 
     return z;
   })
-  
+
